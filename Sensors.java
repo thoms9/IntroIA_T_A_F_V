@@ -66,11 +66,18 @@ public class Sensors {
     }
     
     /**
-     * Retourne le fournisseur d'échantillons pour le capteur tactile.
-     * @return SampleProvider pour le contact.
+     * Retourne vrai si le capteur est en contact avec un objet
+     * @return boolean pour le contact.
      */
-    public SampleProvider getTouch() {
-        return touchMode;
+    public boolean getTouch() {
+    	// Create an array to store the sample value
+    	float[] sample = new float[touchMode.sampleSize()];
+
+    	// Fetch the sample from the touch sensor
+    	touchMode.fetchSample(sample, 0);
+    	
+    	if(sample[0]==1) return true;
+    	else return false;
     }
     
     /**
