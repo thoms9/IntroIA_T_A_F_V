@@ -33,6 +33,11 @@ public class Actionneurs {
         moteurPinces = new EV3MediumRegulatedMotor(MotorPort.A);
     }
 
+    //Méthode pour régler la vitesse de déplacement du pilot différentiel (en cm par seconde)
+    public void setSpeedChassis(int vitesse){
+        pilot.setRobotSpeed(vitesse);
+    }
+
     // Méthode pour faire avancer le robot sur une distance donnée (en cm)
     public void avancer(double distance) {
         pilot.travel(distance);  // Déplace le robot sur la distance spécifiée
