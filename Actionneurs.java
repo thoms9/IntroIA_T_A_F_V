@@ -65,6 +65,10 @@ public class Actionneurs {
         moteurPinces.rotate(-angle);  // Ouvre les pinces en les faisant tourner dans le sens inverse de l'angle spécifié
     }
 
+    public void arc(double r,double a) {
+    	pilot.arc(r, a);
+    }
+
 }
 
 
