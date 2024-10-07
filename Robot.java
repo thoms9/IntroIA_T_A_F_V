@@ -29,6 +29,7 @@ public class Robot {
 	}
 	
 	public void DeplacerVersPalet() {
+		public void Avancer(distance.Rechercher());
 		
 	}
 	
