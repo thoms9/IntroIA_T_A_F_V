@@ -13,13 +13,13 @@ public class Robot {
         actionneurs = new Actionneurs();
     }
         
-	public void Ramasser() {
+	public void ramasser() {
 		actionneurs.ouvrirPinces(10, 30);
 		while(!sensors.getTouch()) actionneurs.avancer(10);
 		if(sensors.getTouch()) actionneurs.fermerPinces(10,30);
 	}
 	
-	public void Rechercher() {
+	public void rechercher() {
 		SampleProvider distanceProvider = sensors.getDistance();
 		ArrayList distances = new ArrayList();
 		
@@ -29,20 +29,20 @@ public class Robot {
 		
 	}
 	
-	public void DeplacerVersPalet() {
+	public void deplacerVersPalet() {
 		tourner(angle.Rechercher());
 		Delay.msDelay(200);
 		avancer(distance.Rechercher()-10);
 		
 	}
 	
-	public void Deposer() {
+	public void deposer() {
 		actionneurs.ouvrirPinces(10, 30);
 	}
 	
-	public void PremierPalet() {
+	public void premierPalet() {
 		actionneurs.arc(10, 10);
-		Ramasser();
+		ramasser();
 		actionneurs.avancer(10);
 		actionneurs.ouvrirPinces(10, 10);
 	}
