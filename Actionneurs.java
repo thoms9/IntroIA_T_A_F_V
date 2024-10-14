@@ -35,7 +35,7 @@ public class Actionneurs {
 
     //Méthode pour régler la vitesse de déplacement du pilot différentiel (en cm par seconde)
     public void setSpeedChassis(int vitesse){
-        pilot.setRobotSpeed(vitesse);
+        pilot.setLinearSpeed(vitesse);
     }
 
     // Méthode pour faire avancer le robot sur une distance donnée (en cm)
