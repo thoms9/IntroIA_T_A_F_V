@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import lejos.utility.Delay;
 
 import lejos.robotics.SampleProvider;
 
@@ -29,9 +30,9 @@ public class Robot {
 	}
 	
 	public void DeplacerVersPalet() {
-		public void Tourner(angle.Rechercher());
+		tourner(angle.Rechercher());
 		Delay.msDelay(200);
-		public void Avancer(distance.Rechercher()-10);
+		avancer(distance.Rechercher()-10);
 		
 	}
 	
