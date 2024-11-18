@@ -1,7 +1,9 @@
 import java.util.ArrayList;
-import lejos.utility.Delay;
+import java.util.List;
 
+import lejos.hardware.motor.*;
 import lejos.robotics.SampleProvider;
+import lejos.utility.Delay;
 
 public class Robot {
 
@@ -14,9 +16,13 @@ public class Robot {
     }
         
 	public void ramasser() {
-		actionneurs.ouvrirPinces(10, 30);
-		while(!sensors.getTouch()) actionneurs.avancer(10);
-		if(sensors.getTouch()) actionneurs.fermerPinces(10,30);
+		actionneurs.setSpeedChassis(120);
+		actionneurs.ouvrirPinces(1000);
+		while(!sensors.getTouch()) { 
+			actionneurs.avancer(100, true);
+			//Delay.msDelay(500);
+		}
+		if(sensors.getTouch()) actionneurs.fermerPinces(1000);
 	}
 	
 	public void rechercher() {
@@ -30,23 +36,65 @@ public class Robot {
 	}
 	
 	public void deplacerVersPalet() {
-		tourner(angle.Rechercher());
+		
 		Delay.msDelay(200);
-		avancer(distance.Rechercher()-10);
+		
 		
 	}
 	
 	public void deposer() {
-		actionneurs.ouvrirPinces(10, 30);
+		actionneurs.ouvrirPinces(1000);
 	}
 	
 	public void premierPalet() {
-		actionneurs.arc(10, 10);
-		ramasser();
-		actionneurs.avancer(10);
-		actionneurs.ouvrirPinces(10, 10);
+		actionneurs.avancer(500, true);
+		actionneurs.ouvrirPinces(1000);
+		actionneurs.fermerPinces(1000);
+		actionneurs.arc(1230,750);
+		actionneurs.ouvrirPinces(100);
+
 	}
 	
-   
+	public static void main (String[] args) {
+		
+	
+
+		
+        Actionneurs actionneurs = new Actionneurs();
+        Sensors sensors = new Sensors();
+        
+        
+        final int numMeasures = 36;  
+        float[] distances = new float[numMeasures];  
+        
+        
+        SampleProvider distanceSensor = sensors.getDistance();
+        float[] distanceSample = new float[distanceSensor.sampleSize()];
+        
+       
+        actionneurs.setSpeedChassis(50);  
+        
+        List<Float> data  = new ArrayList<>(); 
+        actionneurs.tourner(360.0, true);
+        while (actionneurs.isMoving()) {
+            distanceSensor.fetchSample(distanceSample, 0);
+            data.add(distanceSample[0]);  
+            System.out.println((distanceSample[0] * 100) + " cm");
+            
+        }
+        
+
+        System.out.println(data);
+         
+        
+
+        
+        sensors.closeSensors();
+        
+    }
+	
 }
+
+   
+
 
