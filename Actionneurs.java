@@ -2,6 +2,7 @@ import lejos.hardware.motor.*;
 import lejos.hardware.port.*;
 import lejos.robotics.RegulatedMotor;
 import lejos.robotics.navigation.*;
+import lejos.utility.Delay;
 import lejos.robotics.chassis.*;
 
 
@@ -11,7 +12,7 @@ public class Actionneurs {
     private MovePilot pilot;
     
     // Moteur pour contrôler les pinces du robot
-    private RegulatedMotor moteurPinces;
+    private EV3MediumRegulatedMotor moteurPinces;
 
     // Constructeur qui initialise les moteurs et le pilot
     public Actionneurs() {
@@ -20,8 +21,8 @@ public class Actionneurs {
         EV3MediumRegulatedMotor moteurDroit = new EV3MediumRegulatedMotor(MotorPort.B);
         
         // Création des roues avec les caractéristiques (diamètre 56 mm et offset pour la position sur le châssis)
-        Wheel roueGauche = WheeledChassis.modelWheel(moteurGauche, 56).offset(-75);  // Roue gauche à 75 mm à gauche du centre
-        Wheel roueDroite = WheeledChassis.modelWheel(moteurDroit, 56).offset(75);   // Roue droite à 75 mm à droite du centre
+        Wheel roueGauche = WheeledChassis.modelWheel(moteurGauche, 56).offset(-54);  // Roue gauche à 75 mm à gauche du centre
+        Wheel roueDroite = WheeledChassis.modelWheel(moteurDroit, 56).offset(54);   // Roue droite à 75 mm à droite du centre
         
         // Création du châssis différentiel avec deux roues
         Chassis chassis = new WheeledChassis(new Wheel[] { roueGauche, roueDroite }, WheeledChassis.TYPE_DIFFERENTIAL);
@@ -36,21 +37,28 @@ public class Actionneurs {
     //Méthode pour régler la vitesse de déplacement du pilot différentiel (en cm par seconde)
     public void setSpeedChassis(int vitesse){
         pilot.setLinearSpeed(vitesse);
+        pilot.setAngularSpeed(vitesse);
     }
 
     // Méthode pour faire avancer le robot sur une distance donnée (en cm)
+    public void avancer(double distance, boolean immediateReturn) {
+        pilot.travel(distance, immediateReturn);  // Déplace le robot sur la distance spécifiée
+    }
+    
     public void avancer(double distance) {
-        pilot.travel(distance);  // Déplace le robot sur la distance spécifiée
+    	pilot.travel(distance);
     }
 
     // Méthode pour faire reculer le robot sur une distance donnée (en cm)
-    public void reculer(double distance) {
-        pilot.travel(-distance);  // Déplace le robot en arrière (distance négative)
+    public void reculer(double distance, boolean immediateReturn) {
+        pilot.travel(-distance, immediateReturn);  // Déplace le robot en arrière (distance négative)
     }
+    
+   
 
     // Méthode pour tourner le robot d'un angle donné (en degrés)
-    public void tourner(double angle) {
-        pilot.rotate(angle);  // Tourne le robot de l'angle spécifié (positif pour tourner à droite, négatif pour tourner à gauche)
+    public void tourner(double angle, boolean immediateReturn) {
+        pilot.rotate(angle, immediateReturn);  // Tourne le robot de l'angle spécifié (positif pour tourner à droite, négatif pour tourner à gauche)
     }
 
     // Méthode pour arrêter immédiatement les moteurs du robot
@@ -59,21 +67,39 @@ public class Actionneurs {
     }
 
     // Méthode pour fermer les pinces avec un angle et une vitesse spécifiés
-    public void fermerPinces(int angle, int vitesse) {
+    public void fermerPinces( int vitesse) {
         moteurPinces.setSpeed(vitesse);  // Définit la vitesse du moteur des pinces
-        moteurPinces.rotate(angle);  // Ferme les pinces en les faisant tourner d'un angle spécifié
+        moteurPinces.backward();  // Ferme les pinces en les faisant tourner d'un angle spécifié
+        Delay.msDelay(2800);
+        moteurPinces.stop();
     }
 
     // Méthode pour ouvrir les pinces avec un angle et une vitesse spécifiés
-    public void ouvrirPinces(int angle, int vitesse) {
+    public void ouvrirPinces( int vitesse) {
         moteurPinces.setSpeed(vitesse);  // Définit la vitesse du moteur des pinces
-        moteurPinces.rotate(-angle);  // Ouvre les pinces en les faisant tourner dans le sens inverse de l'angle spécifié
+        moteurPinces.forward();  // Ouvre les pinces en les faisant tourner dans le sens inverse de l'angle spécifié
+        Delay.msDelay(2800);
+        moteurPinces.stop();
     }
 
-    public void arc(double r,double a) {
-    	pilot.arc(r, a);
+    public void arc(double r, double a) {
+    	pilot.travelArc(r,a);
     }
-
+    
+    public void stopChassis(boolean b) {
+    	pilot.stop();
+    }
+    
+    public boolean isMoving() {
+    	return pilot.isMoving();
+    }
+    
+    //public static void main(String[]args) {
+    	//Actionneurs actionneurs = new Actionneurs();
+    	//actionneurs.ouvrirPinces(100);
+    	
+    //}
 }
+
 
 
