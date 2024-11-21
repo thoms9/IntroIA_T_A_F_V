@@ -9,14 +9,18 @@ public class Robot {
 
 	private Sensors sensors;
 	private Actionneurs actionneurs;
+	private List<Float> distances;
+	private int orientation;
 	
     public Robot() {
         sensors = new Sensors();
         actionneurs = new Actionneurs();
+        distances = new ArrayList<>();
+        orientation = 0;
     }
         
 	public void ramasser() {
-		actionneurs.setSpeedChassis(120);
+		actionneurs.setLinearSpeed(120);
 		actionneurs.ouvrirPinces(1000);
 		while(!sensors.getTouch()) { 
 			actionneurs.avancer(100, true);
@@ -25,22 +29,68 @@ public class Robot {
 		if(sensors.getTouch()) actionneurs.fermerPinces(1000);
 	}
 	
-	public void rechercher() {
-		SampleProvider distanceProvider = sensors.getDistance();
-		ArrayList distances = new ArrayList();
+public void rechercher() {
 		
-			float[] sample = new float[distanceProvider.sampleSize()];
-	        distanceProvider.fetchSample(sample, 0);
-	        distances.add(Float.valueOf(sample[0]));	
+		actionneurs.setRotationSpeed(50);
 		
+	    distances.clear();
+	    
+	    actionneurs.tourner(360.0, true);
+	    
+	    float[] sample = new float[sensors.getDistance().sampleSize()];
+	    
+	    while (actionneurs.isMoving()) {
+	        sensors.getDistance().fetchSample(sample, 0);
+	        
+	        distances.add(sample[0]);
+	        
+	        Delay.msDelay(100);
+	    }
+	    
+	    sensors.closeSensors();
+	    
+	    System.out.println("Distances : " + distances);
+	    System.out.println(distances.size());
+	    
 	}
+
 	
-	public void deplacerVersPalet() {
-		
-		Delay.msDelay(200);
-		
-		
-	}
+public void deplacerVersPalet() {
+	
+	List<Integer> indicesPalet = new ArrayList<>();
+	
+	final double tolerance = 0.25;
+    
+    for (int i = 0; i < distances.size() - 1; i++) {
+    	if (distances.get(i)>1) i++;
+        if (Math.abs(distances.get(i) - distances.get(i + 1)) <= tolerance) {
+            indicesPalet.add(i);
+        }
+    }
+    
+    double d = 10;
+    int c = 0;
+    
+    if (!indicesPalet.isEmpty()) {
+    	for (int j = 0; j < indicesPalet.size()-2 - 1; j=j+2) {
+			if(distances.get((indicesPalet.get(j)+indicesPalet.get(j+1))/2)<d) {
+				d = (distances.get((indicesPalet.get(j)+indicesPalet.get(j+1))/2));
+				c = (indicesPalet.get(j)+indicesPalet.get(j+1))/2;
+			}
+    	}
+    }
+
+    if (!indicesPalet.isEmpty()) System.out.println("Indices palets : " + indicesPalet);
+    else System.out.println("Aucun palet détecté.");
+    
+    
+
+    
+    System.out.println(indicesPalet);
+    System.out.println("Orientation palet : " + 360/distances.size()*c);
+
+}
+
 	
 	public void deposer() {
 		actionneurs.ouvrirPinces(1000);
@@ -55,41 +105,42 @@ public class Robot {
 
 	}
 	
+	public int getCouleurEnTempsReel() {
+	   
+	    SampleProvider colorProvider = sensors.getColor();
+	    float[] sample = new float[colorProvider.sampleSize()];
+	    
+	    
+	    colorProvider.fetchSample(sample, 0);
+	    
+	   
+	    return (int) sample[0];
+	}
+	
+	public void avancerJusquaBlanc() {
+	    actionneurs.setLinearSpeed(200); 
+	    actionneurs.avancer(Double.MAX_VALUE, true); 
+
+	   
+	    while (getCouleurEnTempsReel() != 6) { 
+	        Delay.msDelay(100); 
+	    }
+
+	   
+	    actionneurs.arreter();
+	    System.out.println("Couleur blanche détectée, arrêt du robot.");
+	    deposer();
+	    actionneurs.reculer(150,true);
+	    actionneurs.fermerPinces(1000);
+	}
+	
 	public static void main (String[] args) {
 		
-	
-
+		Robot R = new Robot();
+		R.rechercher();
+		R.deplacerVersPalet();
+		//R.avancerJusquaBlanc();
 		
-        Actionneurs actionneurs = new Actionneurs();
-        Sensors sensors = new Sensors();
-        
-        
-        final int numMeasures = 36;  
-        float[] distances = new float[numMeasures];  
-        
-        
-        SampleProvider distanceSensor = sensors.getDistance();
-        float[] distanceSample = new float[distanceSensor.sampleSize()];
-        
-       
-        actionneurs.setSpeedChassis(50);  
-        
-        List<Float> data  = new ArrayList<>(); 
-        actionneurs.tourner(360.0, true);
-        while (actionneurs.isMoving()) {
-            distanceSensor.fetchSample(distanceSample, 0);
-            data.add(distanceSample[0]);  
-            System.out.println((distanceSample[0] * 100) + " cm");
-            
-        }
-        
-
-        System.out.println(data);
-         
-        
-
-        
-        sensors.closeSensors();
         
     }
 	
