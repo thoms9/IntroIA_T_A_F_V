@@ -59,7 +59,7 @@ public class Robot {
     
     public List<Integer> indicesDebutFin(List<Integer> indices) {
     	List<Integer> indicesDebutFin = new ArrayList<>();
-        final double tolerance = 0.15;
+        final double tolerance = 0.75;
             for (int i = 1; i < distances.size(); i++) {
             	if(indices.get(i)==-2) {
                 	continue;
@@ -214,10 +214,10 @@ public class Robot {
 			}
 		}
 		if(orientation < 180) {
-			actionneurs.tourner(-110, false);
+			actionneurs.tourner(-100, false);
 		}
 				
-		else actionneurs.tourner(110, false);
+		else actionneurs.tourner(100, false);
 	}
 
 	public void allerZoneDepotBlue() {
@@ -289,6 +289,7 @@ public class Robot {
 				continue;
 			}
 		}
+		resetOrientation();
 		actionneurs.setLinearSpeed(50);
 		if(orientation < 180) {
 			actionneurs.tourner(90, false);
@@ -297,9 +298,11 @@ public class Robot {
 		else {
 			actionneurs.tourner(-90, false);
 		}
+		actionneurs.setLinearSpeed(100);
 		actionneurs.reculer(800, true);
 		while(actionneurs.isMoving()) {
 			if(sensors.getColor() == lejos.robotics.Color.BLACK) {
+				actionneurs.avancer(100, false);
 				actionneurs.arreter();
 			}
 			else continue;
@@ -356,25 +359,32 @@ public class Robot {
 	}
 	
 	public void resetOrientation() {
-		float distanceZero = 0f;
-		if(orientation>180) {
-			actionneurs.setRotationSpeed(50);
-			while(actionneurs.isMoving()) {
-				Delay.msDelay(5);
-				float distance = distanceDevant();
-				if(distance == distanceZero) {
-					actionneurs.arreter();
-					orientation = 0;
-				}
-				else continue;
+		actionneurs.reculer(100, false);
+		actionneurs.tourner(90, false);
+		actionneurs.avancer(1500, true);
+		while(actionneurs.isMoving()) {
+			double startPosition = 0;
+	        double endPosition = 0;
+	        int color = sensors.getColor();
+			if (color == lejos.robotics.Color.YELLOW) {
+                startPosition = actionneurs.pilot.getMovement().getDistanceTraveled();
 			}
-		}
-		else {
+			if (color == lejos.robotics.Color.BLACK) {
+                endPosition = actionneurs.pilot.getMovement().getDistanceTraveled();
+			
+            double distance = endPosition-startPosition;
+            double angle = Math.acos(distance/5000);
+            actionneurs.tourner(-angle-90, false);
+            orientation=0;
+            }
+			
+			
 			
 		}
 	}
 
 	public void manipulerPalet() {
+		deplacerVersPalet();
 		ramasser();
 		allerZoneDepot();
 		deposer();
@@ -382,11 +392,26 @@ public class Robot {
 	
 	public void premierPalet() {
 		premiereCouleur = sensors.getColor();
+		actionneurs.setLinearSpeed(200);
+		actionneurs.avancer(600,true);
+		actionneurs.ouvrirPinces(700,false);
+		actionneurs.fermerPinces(700,false);
+		actionneurs.tourner(30,false);
+		actionneurs.avancer(500,false);
+		actionneurs.tourner(-30, false);
+		actionneurs.avancer(1350,false);
+		actionneurs.ouvrirPinces(700,false);
+		actionneurs.reculer(300, false);
+		actionneurs.fermerPinces(700,true);
+
 	}
 	
 	public static void main (String[] args) {
 		
 		Robot R = new Robot();
+		R.trouverPalet();
+		R.manipulerPalet();
+		R.stop();
 		R.trouverPalet();
 		R.manipulerPalet();
 		R.stop();
