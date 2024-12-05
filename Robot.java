@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.List;
 import lejos.utility.Delay;
 
-public class Robot1 {
+public class Robot {
 
 	private Sensors sensors;
 	private Actionneurs actionneurs;
@@ -14,7 +14,7 @@ public class Robot1 {
 	private static int tentative;
 	
 	
-	public Robot1() {
+	public Robot() {
         sensors = new Sensors();
         actionneurs = new Actionneurs();
         distances = new ArrayList<>();
@@ -150,7 +150,7 @@ public class Robot1 {
 			}
 		}       
 	}
-	
+		
 	public Float distanceDevant() {
 		float[] sample = new float[sensors.getDistance().sampleSize()];
 		sensors.getDistance().fetchSample(sample, 0);
