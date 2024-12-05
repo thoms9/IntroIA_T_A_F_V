@@ -17,8 +17,8 @@ import lejos.robotics.chassis.*;
         EV3MediumRegulatedMotor moteurGauche = new EV3MediumRegulatedMotor(MotorPort.C);
         EV3MediumRegulatedMotor moteurDroit = new EV3MediumRegulatedMotor(MotorPort.B);
         
-        Wheel roueGauche = WheeledChassis.modelWheel(moteurGauche, 56).offset(-54);
-        Wheel roueDroite = WheeledChassis.modelWheel(moteurDroit, 56).offset(54);
+        Wheel roueGauche = WheeledChassis.modelWheel(moteurGauche, 56).offset(-6.05);
+        Wheel roueDroite = WheeledChassis.modelWheel(moteurDroit, 56).offset(6.05);
         
         Chassis chassis = new WheeledChassis(new Wheel[] { roueGauche, roueDroite }, WheeledChassis.TYPE_DIFFERENTIAL);
         
@@ -81,3 +81,6 @@ import lejos.robotics.chassis.*;
     	return pilot.isMoving();
     }
 }
+
+
+
