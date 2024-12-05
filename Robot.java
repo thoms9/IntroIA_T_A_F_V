@@ -123,8 +123,8 @@ public class Robot {
         System.out.println("orientation palet le plus proche: "
         		+ indicePalet*(double)360/distances.size() + " degrès");
         if(distances.isEmpty() || indicesDebutFin.isEmpty() || indicesPalets.isEmpty() ||
-        		distancePalet==3 || indicePalet==-1) {
-        	actionneurs.reculer(300, false);
+        		distancePalet==3f || indicePalet==-1) {
+        	actionneurs.reculer(500, false);
         	tentative += 1;
         	trouverPalet();
         	return;
@@ -142,7 +142,7 @@ public class Robot {
 		while(actionneurs.isMoving()) {
 			Delay.msDelay(250);
 			float distance = distanceDevant();
-			if(distance <= distancePalet) {
+			if(distance <= distancePalet && distance > 0.15) {
 				distancePalet = distance;
 			}
 			else {
@@ -208,7 +208,7 @@ public class Robot {
 
 	public void deposer() {
 		
-		actionneurs.setLinearSpeed(150);
+		actionneurs.setLinearSpeed(200);
 		actionneurs.avancer(3000, true);
 		
 		while(actionneurs.isMoving()) {
@@ -260,7 +260,7 @@ public class Robot {
 		
 		rechercher();
 		float dMin = 3f;
-		int indiceMin = 30;
+		int indiceMin = 0;
 		for(int i=0;i<distances.size();i++) {
 			if(distances.get(i)<dMin) {
 				dMin = distances.get(i);
@@ -279,6 +279,8 @@ public class Robot {
 		allerZoneDepot();
 		deposer();
 		resetOrientation();
+		distancePalet = 3f;
+		indicePalet = -1;
 	}
 	
 	public void premierPalet() {
@@ -288,7 +290,7 @@ public class Robot {
 		actionneurs.ouvrirPinces(700,false);
 		actionneurs.fermerPinces(700,true);
 		actionneurs.tourner(30,false);
-		actionneurs.avancer(30,false);
+		actionneurs.avancer(350,false);
 		actionneurs.tourner(-30, false);
 		deposer();
 		resetOrientation();
