@@ -17,8 +17,8 @@ import lejos.robotics.chassis.*;
         EV3MediumRegulatedMotor moteurGauche = new EV3MediumRegulatedMotor(MotorPort.C);
         EV3MediumRegulatedMotor moteurDroit = new EV3MediumRegulatedMotor(MotorPort.B);
         
-        Wheel roueGauche = WheeledChassis.modelWheel(moteurGauche, 56).offset(-6.05);
-        Wheel roueDroite = WheeledChassis.modelWheel(moteurDroit, 56).offset(6.05);
+        Wheel roueGauche = WheeledChassis.modelWheel(moteurGauche, 56).offset(-60.5);
+        Wheel roueDroite = WheeledChassis.modelWheel(moteurDroit, 56).offset(60.5);
         
         Chassis chassis = new WheeledChassis(new Wheel[] { roueGauche, roueDroite }, WheeledChassis.TYPE_DIFFERENTIAL);
         
@@ -27,22 +27,22 @@ import lejos.robotics.chassis.*;
         moteurPinces = new EV3MediumRegulatedMotor(MotorPort.A);
     }
 
-    //Méthode pour régler la vitesse de déplacement du pilot différentiel (en cm par seconde)
+    //Méthode pour régler la vitesse de déplacement du pilot différentiel (en mm par seconde)
     public void setLinearSpeed(double vitesse){
         pilot.setLinearSpeed(vitesse);
     }
     
-    //Méthode pour régler la vitesse de rotation du pilot différentiel (en cm par seconde)
+    //Méthode pour régler la vitesse de rotation du pilot différentiel (en mm par seconde)
     public void setRotationSpeed(double vitesse) {
     	pilot.setAngularSpeed(vitesse);
     }
 
-    // Méthode pour faire avancer le robot sur une distance donnée (en cm)
+    // Méthode pour faire avancer le robot sur une distance donnée (en mm)
     public void avancer(double distance, boolean immediateReturn) {
         pilot.travel(distance, immediateReturn);
     }
 
-    // Méthode pour faire reculer le robot sur une distance donnée (en cm)
+    // Méthode pour faire reculer le robot sur une distance donnée (en mm)
     public void reculer(double distance, boolean immediateReturn) {
         pilot.travel(-distance, immediateReturn);
     }   
