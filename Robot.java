@@ -28,9 +28,9 @@ import lejos.utility.Delay;
 	
 	
 	/**
-	 * Constructeur qui initialise les senseurs, les 
+	 * Constructeur qui initialise les capteurs, les 
 	 * actionneurs, la liste pour les distances, l'état
-	 * initiale et ouvre les pinces du robot pour démarer 
+	 * initial et ouvre les pinces du robot pour démarer 
 	 * plus rapidement.
 	 * 
 	 * @see Sensors#Sensors()
@@ -120,7 +120,7 @@ import lejos.utility.Delay;
 	 * Méthode pour faire avancer le robot de la longeur de la table (3m), ou
 	 * jusqu'à la zone d’en-but adverse, le robot s'arrète si il detecte la
 	 * ligne blanche et si la distance devant lui est inférieur a 30cm.
-	 * Le robot regarde la distance devant tous les 150ms.
+	 * Le robot verifie la distance devant tous les 150ms.
 	 * 
 	 * @see Actionneurs#avancer(double, boolean)
 	 * @see Actionneurs#isMoving()
@@ -148,8 +148,8 @@ import lejos.utility.Delay;
 	
 	
 	/**
-	 * Méthode qui retourne la distance devant le robot captée
-	 * avec le senseur ultrasonic.
+	 * Méthode qui retourne la distance devant le robot capté
+	 * avec le capteur d'ultrason.
 	 * 
 	 * @return float la distance en mètres.
 	 * 
@@ -183,9 +183,9 @@ import lejos.utility.Delay;
 	/**
 	 * Méthode pour recentrer le robot sur la table;
 	 * regarde l'orientation du robot et se tourne pour
-	 * regarder le mur le plus proche, recule en regardant
+	 * regarder le mur le plus proche, recule en verifiant
 	 * la distance devant, s'arrète lorsque cette distance
-	 * est supérieur à 85cm puis se tourne pour regarder
+	 * est supérieur à 85cm puis se tourne en direction de
 	 * la zone d’en-but adverse.
 	 * 
 	 * @see Actionneurs#tourner(double, boolean)
@@ -301,7 +301,7 @@ import lejos.utility.Delay;
 	 * a une liste, puis regarde si les prochains indices ont une différence 
 	 * inférieur au seuil de "tolerancePalet" et ajoute l'incice 
 	 * courrent a la même liste, ensuite regarde si la distance est 
-	 * supérieur a un seuil "différence" correspond à la fin potentiel d'un 
+	 * supérieur a un seuil "différence" correspondant à la fin potentiel d'un 
 	 * palet et l'ajoute a la liste. Si il detecte 2
 	 * début de palet il vide la liste, ou si il trouve deux indices
 	 * qui ne sont pas successif sans avoir detecter la fin d'un palet
@@ -433,7 +433,7 @@ import lejos.utility.Delay;
 	 * Méthode qui fait avancer le robot de la longeur
 	 * de la table (3m) et s'arrète quand la distance de devant
 	 * augmente (le robot ne detecte plus le palet car il est trop proche),
-	 * ou lorsque la distance est inférieur à 25cm (le robot à detecté un mur).
+	 * ou lorsque la distance est inférieur à 25cm (le robot a detecté un mur).
 	 * 
 	 * @see Actionneurs#avancer(double, boolean)
 	 * @see Actionneurs#isMoving()
@@ -645,7 +645,7 @@ import lejos.utility.Delay;
 					etat = 1;
 					break;
 					
-				// Execute la méthode trouver Palet, s'il ne
+				// Execute la méthode trouverPalet, s'il ne
 				// trouve rien recule et recomence, puis passe
 				// à l'état 2.
 				case 1:
