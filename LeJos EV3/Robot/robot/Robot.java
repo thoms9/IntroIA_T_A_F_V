@@ -347,8 +347,8 @@ import lejos.utility.Delay;
         List<Integer> paletActuel = new ArrayList<Integer>();
         final double difference = 0.5;
         final double tolerancePalet = 0.05;
-        final int tailleMinPalet = 3;
-        final int tailleMaxPalet = 6;
+        final int tailleMinPalet = 5;
+        final int tailleMaxPalet = 15;
 
         for (int i = 1; i < indices.size(); i++) {
             int indiceActuel = indices.get(i);

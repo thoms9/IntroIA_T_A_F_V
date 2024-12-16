@@ -20,5 +20,35 @@ public class RobotTest {
 		
 	}
 	
+	@Test
+	public void testPremierPalet() {
+		Robot robot = new Robot();
+		
+		
+		// Test pour vérifier le bon fonctionnement de premierPalet
+		int orientation = 0;
+		robot.premierPalet();
+		
+	}
+	
+	@Test
+	public void testTrouverPalet() {
+		Robot robot = new Robot();
+		
+		
+		// Test pour vérifier le bon fonctionnement de trouverPalet
+		int orientation = 0;
+		robot.trouverPalet();
+		
+	}
+	
+	@Test
+	public void testManipulerPalet() {
+		Robot robot = new Robot();
+		
+		// Test pour vérifier le bon fonctionnement de manipulerPalet
+		int orientation = 135;
+		robot.manipulerPalet();
+	}
 	
 }
